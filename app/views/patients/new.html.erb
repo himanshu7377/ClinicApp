@@ -1,0 +1,54 @@
+<div class="container p-5 border">
+  <h1 class="display-4 text-center mb-3">New Patient</h1>
+
+  <%= form_with(model: @patient, url: patients_path, method: :post) do |form| %>
+    <% if @patient.errors.any? %>
+      <div class="error-messages">
+        <h2><%= pluralize(@patient.errors.count, "error") %> prohibited this patient from being saved:</h2>
+        <ul>
+          <% @patient.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group row">
+      <label for="patient_name" class="col-sm-3 col-form-label">Name</label>
+      <div class="col-sm-6">
+        <%= form.text_field :name, class: 'form-control', id: 'patient_name' %>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="patient_age" class="col-sm-3 col-form-label">Age</label>
+      <div class="col-sm-6">
+        <%= form.number_field :age, class: 'form-control', id: 'patient_age' %>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="patient_medical_history" class="col-sm-3 col-form-label">Medical History</label>
+      <div class="col-sm-6">
+        <%= form.text_field :medical_history, class: 'form-control', id: 'patient_medical_history' %>
+      </div>
+    </div>
+
+    <div class="form-actions mt-3 text-center">
+      <%= form.submit 'Create Patient', class: 'btn btn-raised btn-primary' %>
+      <%= link_to 'Back', patients_path, class: 'btn btn-outlined btn-secondary' %>
+    </div>
+  <% end %>
+
+</div>
+
+<style>
+  .form-group {
+    margin-bottom: 1rem; /* Consider using grid-based layout with a framework */
+  }
+
+  .error-messages {
+    color: red;
+    margin-bottom: 1rem;
+  }
+</style>

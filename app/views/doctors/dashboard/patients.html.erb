@@ -1,0 +1,63 @@
+<body>
+  <h1>Doctor Dashboard</h1>
+  <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js@3.7.0' %>
+
+  <canvas id="myChart" width="400" height="300"></canvas>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      const labels = <%= raw @patients_counts.keys.map { |date| date.strftime('%A') }.to_json %>;
+      const data = <%= raw @patients_times.values.to_json %>;
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Patients Registered',
+            data: data,
+            borderColor: 'rgb(75, 192, 192)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              suggestedMax: 10
+            }
+          }
+        }
+      });
+    });
+  </script>
+
+  <h2>Registered Patients</h2>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Age</th>
+          <th scope="col">Medical History</th>
+          <th scope="col">Registered By</th>
+          <th scope="col">Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @patients.each do |patient| %>
+          <tr>
+            <td><%= patient.name %></td>
+            <td><%= patient.age %></td>
+            <td><%= patient.medical_history %></td>
+            <td><%= patient.user.name %></td>
+            <td><%= patient.created_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</body>

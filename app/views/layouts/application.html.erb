@@ -1,0 +1,78 @@
+<!-- app/views/layouts/application.html.erb -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ClinicApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<%= javascript_importmap_tags %>
+ <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js@3.7.0' %>
+  <%= javascript_include_tag 'application', defer: true  %>
+
+  
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="<%= root_path %>">ClinicApp</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <% if user_signed_in? %>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Logged in as: <%= current_user.name %></a>
+            </li>
+
+            <li class="nav-item">
+              <p class="nav-link" >role in as: <%= current_user.role %></p>
+            </li>
+            <li class="nav-item">
+            <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, data: { turbo_method: :delete } , class: "nav-link" %>
+          </li>
+
+
+  
+          <li class="nav-item">
+  <% if current_user.doctor? %>
+    <%= form_with(url: switch_role_path, method: :post, data: { turbo: false }, local: true) do |f| %>
+      <%= f.hidden_field :role, value: 'receptionist' %>
+      <%= f.submit 'Receptionist Portal', class: 'nav-link btn btn-link' %>
+    <% end %>
+  <% elsif current_user.receptionist? %>
+    <%= form_with(url: switch_role_path, method: :post, data: { turbo: false }, local: true) do |f| %>
+      <%= f.hidden_field :role, value: 'doctor' %>
+      <%= f.submit 'Doctor Portal', class: 'nav-link btn btn-link' %>
+    <% end %>
+  <% end %>
+</li>
+
+          
+          <% else %>
+            <li class="nav-item">
+              <%= link_to 'Login', new_user_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'Sign up', new_user_registration_path, class: "nav-link" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+ <div class="container">
+    <%= yield %>
+  </div>
+  
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

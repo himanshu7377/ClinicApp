@@ -1,0 +1,7 @@
+<h1>Patient Details</h1>
+<p><strong>Name:</strong> <%= @patient.name %></p>
+<p><strong>Age:</strong> <%= @patient.age %></p>
+<p><strong>Medical History:</strong> <%= @patient.medical_history %></p>
+<p><strong>Registered By:</strong> <%= @patient.user.name %></p>
+<p><strong>Created At:</strong> <%= @patient.created_at %></p>
+<%= link_to 'Back to Dashboard', doctors_dashboard_path, class: 'btn btn-secondary' %>

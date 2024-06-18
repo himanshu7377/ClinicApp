@@ -1,0 +1,24 @@
+<h1>Doctor Dashboard</h1>
+<%= line_chart @patient_counts, xtitle: 'Date', ytitle: 'Number of Patients' %>
+
+<h2>Registered Patients</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Medical History</th>
+      <th>Registered By</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @patients.each do |patient| %>
+      <tr>
+        <td><%= patient.name %></td>
+        <td><%= patient.age %></td>
+        <td><%= patient.medical_history %></td>
+        <td><%= patient.registerperson %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

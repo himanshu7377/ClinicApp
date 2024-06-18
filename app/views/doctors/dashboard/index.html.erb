@@ -1,0 +1,88 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Dashboard</title>
+  <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js@3.7.0' , defer: true %>
+</head>
+<body>
+  <h1>Doctor Dashboard</h1>
+
+  <!-- Canvas for Chart -->
+  <canvas id="myChart" width="400" height="200"></canvas>
+
+
+  <% if flash[:notice] %>
+  <script>
+    window.location.href = "/doctors/dashboard?refresh=" + Math.random();
+  </script>
+<% end %>
+  <!-- JavaScript for Chart Rendering -->
+  <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('myChart').getContext('2d');
+    
+    const Labels = <%= raw @patients_counts.keys.map { |date| date.strftime('%A') }.to_json %>;
+    const Data = <%= raw @patients_times.values.to_json %>;
+    const dates = <%= raw @patients_counts.keys.map { |date| date.strftime('%Y-%m-%d') }.to_json %>;
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: Data,
+        datasets: [{
+          label: 'Patients Count',
+          data: Data,
+          borderColor: 'rgb(75, 192, 192)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            suggestedMax: 10
+          }
+        }
+      }
+    });
+  });
+</script>
+
+  <h2>Registered Patients</h2>
+
+  <!-- Table for Patient Data -->
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Age</th>
+          <th scope="col">Medical History</th>
+          <th scope="col">Registered By</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @patients.each do |patient| %>
+          <tr>
+            <td><%= patient.name %></td>
+            <td><%= patient.age %></td>
+            <td><%= patient.medical_history %></td>
+            <td><%= patient.user.name %></td>
+            <td><%= patient.created_at %></td>
+            <td><%= link_to 'View', doctors_dashboard_patients_path(patient), class: 'btn btn-primary btn-sm' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+
+
+

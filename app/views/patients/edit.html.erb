@@ -1,0 +1,38 @@
+<!-- app/views/patients/edit.html.erb -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Patient - ClinicApp</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+ 
+</head>
+<body>
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <h2>Edit Patient</h2>
+        <%= form_for(@patient, url: patient_path(@patient), method: :patch, html: { class: "form" }) do |f| %>
+          <div class="mb-3">
+            <%= f.label :name, class: "form-label" %>
+            <%= f.text_field :name, class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :age, class: "form-label" %>
+            <%= f.number_field :age, class: "form-control" %>
+          </div>
+          <div class="mb-3">
+          <%= f.label :medical_history, class: "form-label" %>
+          <%= f.text_field :medical_history, class: "form-control" %>
+        </div>
+          <!-- Add other patient attributes as needed -->
+          <%= f.submit "Update Patient", class: "btn btn-primary" %>
+           <%= link_to 'Back', patients_path, class: 'btn btn-outlined btn-secondary' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

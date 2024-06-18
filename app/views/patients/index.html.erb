@@ -1,0 +1,61 @@
+<!-- app/views/patients/index.html.erb -->
+
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <h2>Patient List</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Medical History</th>
+             
+              <th>Registered By</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @patients.present? %>
+              <% @patients.each do |patient| %>
+                <tr>
+                  <td><%= patient.name %></td>
+                  <td><%= patient.age %></td>
+                  <td><%= patient.medical_history %></td>
+               
+                  <td><%= patient.user.name || "N/A" %></td>
+                  <td>
+
+                  <% if current_user.id == patient.user_id %>
+                  <%= link_to edit_patient_path(patient), class: 'btn btn-primary btn-sm' do %>
+                    <i class="fas fa-edit"></i> Edit
+                  <% end %>
+                  <%= link_to patient_path(patient), method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } do %>
+                    <i class="fas fa-trash-alt"></i> Delete
+                  <% end %>
+                <% else %>
+                 
+                <%= link_to edit_patient_path(patient), class: 'btn btn-primary btn-sm disabled', style: 'cursor: not-allowed; opacity: 0.4;' do %>
+                  <i class="fas fa-edit"></i> Edit
+                <% end %>
+                <%= link_to patient_path(patient), method: :delete, class: 'btn btn-danger btn-sm disabled', data: { confirm: 'Are you sure?' }, style: 'cursor: not-allowed; opacity: 0.6;' do %>
+                  <i class="fas fa-trash-alt"></i> Delete
+                <% end %>
+                
+                <% end %>
+                
+</td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="3">No patients found</td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <%= link_to 'New Patient', new_patient_path, class: 'btn btn-success' %>
+      </div>
+    </div>
+  </div>
+
